@@ -1,0 +1,38 @@
+/*
+|----------------------------------------------------------
+|  @file       env.dart is enviroment connection url base link data
+|----------------------------------------------------------
+|   @base_url         is url connect to part api
+|   @url              url is part run connect with parth the base url
+|   @default_lang     Langauge configs
+|   @api_timeout      Time api connect and block app
+|
+*/
+
+/*
+|----------------------------------------------------------
+|  url connection for production
+|----------------------------------------------------------
+*/
+const String url = "http://192.168.43.176:8000";
+
+/*
+|----------------------------------------------------------
+|  url connection for development
+|----------------------------------------------------------
+*/
+// const String url = "https://jsonplaceholder.typicode.com";
+
+/*
+|----------------------------------------------------------
+|  url connection for QA tesing
+|----------------------------------------------------------
+*/
+// const String url = "http://api.mobileaqaxyz";
+
+const env = {
+  "base_url": url,
+  "url": url,
+  "default_lang": "en",
+  "api_timeout": "30000"
+};
