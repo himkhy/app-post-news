@@ -3,7 +3,8 @@ import 'package:postnews/components/tag_component.dart';
 import 'package:postnews/models/tag/tag.dart';
 import 'package:postnews/view_models/tag_viewmodel.dart';
 import 'package:provider/provider.dart';
-
+import 'package:rxdart/rxdart.dart';
+var colorController = BehaviorSubject<String>();
 final appBar = AppBar(
   // backgroundColor: Color(0xFF2F2F2F),
   title: Row(
@@ -41,14 +42,46 @@ final appBar = AppBar(
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () async {
+                      colorController
+                          .add('${tagList[index].id}');
+
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           '/tag_view',
                           ModalRoute.withName('/main_view',), arguments: {'id':tagList[index].id});
-
-                    }
-                    ,
-                    child: TagComponent(
-                      tag: tagList[index],
+                    },
+                    child: StreamBuilder(
+                      stream: colorController.stream,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasError &&
+                            snapshot.data != null) {
+                          if (snapshot.data == '${tagList[index].id}') {
+                            return Container(
+                              padding:
+                              EdgeInsets.only(top: 10, left: 26, right: 26.0),
+                              margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                              ),
+                              child: TagComponent(
+                                tag: tagList[index],
+                              ),
+                            );
+                          }
+                        }
+                        return Container(
+                          padding: EdgeInsets.only(top: 10, left: 26, right: 26.0),
+                          margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                          ),
+                          child: TagComponent(
+                            tag: tagList[index],
+                          ),
+                        );
+                      },
                     ),
                   );
 

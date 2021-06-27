@@ -11,7 +11,7 @@ import 'package:postnews/view_models/category_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 var languageController = BehaviorSubject<String>();
-
+var colorController = BehaviorSubject<String>();
 final drawer = Drawer(
 
   // Add a ListView to the drawer. This ensures the user can scroll
@@ -187,19 +187,51 @@ final drawer = Drawer(
                         itemCount: categoryList.length,
                         padding: EdgeInsets.only(bottom: 20),
                         itemBuilder: (context, index) {
+
                           return InkWell(
                             onTap: () async {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/news_view',
-                                  ModalRoute.withName(
-                                    '/main_view',
+                              colorController
+                                  .add('${categoryList[index].id}');
+
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/news_view',
+                                      ModalRoute.withName(
+                                        '/main_view',
+                                      ),
+                                      arguments: {'id': categoryList[index].id});
+                               },
+                            child: StreamBuilder(
+                              stream: colorController.stream,
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasError &&
+                                    snapshot.data != null) {
+                                  if (snapshot.data == '${categoryList[index].id}') {
+                                    return Container(
+                                      padding:
+                                      EdgeInsets.only(left: 20, right: 20),
+                                      margin: EdgeInsets.only(top:5,left: 5.0, right: 5.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        // borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),
+                                      child: CategoryComponent(
+                                        category: categoryList[index],
+                                      ),
+                                    );
+                                  }
+                                }
+                                return Container(
+                                  padding: EdgeInsets.only( left: 20, right: 20.0),
+                                  margin: EdgeInsets.only(top:5,left: 5.0, right: 5.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    // borderRadius: BorderRadius.all(Radius.circular(50.0)),
                                   ),
-                                  arguments: {'id': categoryList[index].id});
-                              //   await Navigator.of(context).pushNamed('/news_view',arguments:{'id':categoryList[index].id});
-                              // Navigator.of(context).pop();
-                            },
-                            child: CategoryComponent(
-                              category: categoryList[index],
+                                  child: CategoryComponent(
+                                    category: categoryList[index],
+                                  ),
+                                );
+                              },
                             ),
                           );
                         },

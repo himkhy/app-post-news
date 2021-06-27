@@ -33,6 +33,6 @@ const String url = "http://192.168.43.176:8000";
 const env = {
   "base_url": url,
   "url": url,
-  "default_lang": "en",
+  "default_lang": "kh",
   "api_timeout": "30000"
 };
